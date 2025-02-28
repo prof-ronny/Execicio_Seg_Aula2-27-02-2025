@@ -1,0 +1,30 @@
+name: Deploy Seguro
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+      
+      - name: Criar arquivo de variáveis de ambiente
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+      
+      - name: Subir banco de dados com Docker-Compose
+        run: docker-compose up -d
+      
+      - name: Instalar dependências
+        run: npm install
+      
+      - name: Executar aplicação
+        run: node app_seguro.js

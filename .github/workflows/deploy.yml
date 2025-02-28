@@ -21,7 +21,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
       
       - name: Subir banco de dados com Docker-Compose
-        run: docker-compose up -d
+        run: docker compose up -d
       
       - name: Instalar dependências
         run: npm install
